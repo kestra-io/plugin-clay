@@ -35,7 +35,7 @@
 </p>
 <p align="center" style="color:grey;"><i>Get started with Kestra in 3 minutes.</i></p>
 
-# Kestra Plugin Template
+# Kestra Clay Plugin
 
 ## Why
 
@@ -45,7 +45,7 @@
 
 ## What
 
-- Provides plugin components under `io.kestra.plugin.templates`.
+- Provides plugin components under `io.kestra.plugin.clay`.
 - Includes classes such as `Example`, `Trigger`.
 
 ## Running Kestra locally with this plugin

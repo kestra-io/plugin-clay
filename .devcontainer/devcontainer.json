@@ -1,10 +1,10 @@
 {
-  "name": "plugin-template",
+  "name": "plugin-clay",
   "build": {
     "context": ".",
     "dockerfile": "Dockerfile"
   },
-  "workspaceFolder": "/workspaces/plugin-template",
+  "workspaceFolder": "/workspaces/plugin-clay",
   "forwardPorts": [8080],
   "customizations": {
     "vscode": {
