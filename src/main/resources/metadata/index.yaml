@@ -1,8 +1,8 @@
 group: io.kestra.plugin.clay
 name: "clay"
 title: "Clay"
-description: "Clay plugin for Kestra"
-body: ""
+description: "Send records from Kestra workflows to Clay tables."
+body: "Push rows to Clay table webhooks with batching and retry support."
 videos: []
 createdBy: "Kestra Core Team"
 managedBy: "Kestra Core Team"
