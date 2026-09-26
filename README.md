@@ -37,16 +37,37 @@
 
 # Kestra Clay Plugin
 
-## Why
+This plugin sends records from Kestra workflows to Clay tables using Clay's inbound webhook.
 
-- What user problem does this solve? Teams need a concrete starting point for building and validating new Kestra plugins without recreating the same project scaffolding from scratch.
-- Why would a team adopt this plugin in a workflow? It gives plugin authors a ready-made reference repo they can adapt alongside their own build, test, and publishing workflow.
-- What operational/business outcome does it enable? It shortens plugin delivery time, reduces setup mistakes, and makes internal or partner plugin development more repeatable.
+## Push rows to Clay
 
-## What
+Create a webhook source in Clay from **Add → Monitor webhook**, then copy its URL. If authentication is enabled, copy the token immediately; Clay only reveals it once. Save the URL and token as Kestra secrets.
 
-- Provides plugin components under `io.kestra.plugin.clay`.
-- Includes classes such as `Example`, `Trigger`.
+```yaml
+id: push_leads_to_clay
+namespace: company.growth
+
+tasks:
+  - id: push_to_clay
+    type: io.kestra.plugin.clay.PushRows
+    webhookUrl: "{{ secret('CLAY_WEBHOOK_URL') }}"
+    authToken: "{{ secret('CLAY_WEBHOOK_TOKEN') }}"
+    rows:
+      - email: alice@example.com
+        company: Acme
+      - email: bob@example.com
+        company: Globex
+    chunkSize: 100
+    failOnPartialError: true
+```
+
+`rows` accepts inline records or a Kestra internal-storage URI containing JSON or ION records. The task sends sequential JSON-array requests, with 100 rows per request by default. It retries HTTP `429` and `5xx` responses up to three total attempts using Kestra's standard exponential retry policy. Other HTTP errors are not retried.
+
+By default, `failOnPartialError` is `true` and the task fails when a chunk still fails after retries. Set it to `false` to record zero-based failed chunk indices and continue. The output includes `rowCount` for rows in successful chunks, `chunkCount` for logical chunks processed, and `failedChunks`.
+
+Clay documents a 50,000-submission limit per webhook source. This task rejects more than 50,000 rows in one execution, but cannot track earlier submissions to a webhook. Retried requests or rerunning a task can create duplicate rows if Clay accepted a request but Kestra did not receive the response.
+
+To receive a callback sent from Clay, use Kestra's generic `io.kestra.plugin.core.trigger.Webhook`; Clay callbacks do not use a standardized payload envelope that requires a dedicated trigger.
 
 ## Running Kestra locally with this plugin
 
