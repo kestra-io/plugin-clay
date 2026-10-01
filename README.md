@@ -63,7 +63,7 @@ tasks:
 
 `rows` accepts inline records or a Kestra internal-storage URI containing JSON or ION records. The task sends sequential JSON-array requests, with 100 rows per request by default. It retries HTTP `429` and `5xx` responses up to three total attempts using Kestra's standard exponential retry policy. Other HTTP errors are not retried.
 
-By default, `failOnPartialError` is `true` and the task fails when a chunk still fails after retries. Set it to `false` to record zero-based failed chunk indices and continue. The output includes `rowCount` for rows in successful chunks, `chunkCount` for logical chunks processed, and `failedChunks`.
+By default, `failOnPartialError` is `true` and the task fails when a chunk still fails after retries. Set it to `false` to record zero-based failed chunk indices and continue. The output includes `rowCount` for rows in chunks Clay accepted (failed chunks excluded), `chunkCount` for logical chunks submitted (the input split by `chunkSize`, retries are not counted), and `failedChunks` for the zero-based indices of chunks that failed after retries when `failOnPartialError` is `false`.
 
 Clay documents a 50,000-submission limit per webhook source. This task rejects more than 50,000 rows in one execution, but cannot track earlier submissions to a webhook. Retried requests or rerunning a task can create duplicate rows if Clay accepted a request but Kestra did not receive the response.
 
