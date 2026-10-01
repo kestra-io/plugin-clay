@@ -1,7 +1,7 @@
 @PluginSubGroup(
     title = "Clay",
-    description = "Clay plugin for Kestra",
-    categories = PluginSubGroup.PluginCategory.DATA
+    description = "Send records from Kestra workflows to Clay tables.",
+    categories = PluginSubGroup.PluginCategory.BUSINESS
 )
 package io.kestra.plugin.clay;
 

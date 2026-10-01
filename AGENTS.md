@@ -3,13 +3,13 @@
 ## What
 
 - Provides plugin components under `io.kestra.plugin.clay`.
-- Includes classes such as `Example`, `Trigger`.
+- Provides the `PushRows` task, which sends records to a Clay table through its inbound webhook in sequential, retried chunks.
 
 ## Why
 
-- What user problem does this solve? Teams need a concrete starting point for building and validating new Kestra plugins without recreating the same project scaffolding from scratch.
-- Why would a team adopt this plugin in a workflow? It gives plugin authors a ready-made reference repo they can adapt alongside their own build, test, and publishing workflow.
-- What operational/business outcome does it enable? It shortens plugin delivery time, reduces setup mistakes, and makes internal or partner plugin development more repeatable.
+- What user problem does this solve? Teams need to feed rows from flows (database queries, files, API results) into Clay tables for enrichment without writing custom webhook code.
+- Why would a team adopt this plugin in a workflow? `PushRows` handles chunking, retries on network errors, HTTP 429 and 5xx, and bearer authentication.
+- What operational/business outcome does it enable? Reliable, observable Clay table ingestion from Kestra, with explicit partial-failure handling.
 
 ## How
 
@@ -25,7 +25,7 @@ Infrastructure dependencies (Docker Compose services):
 
 ### Key Plugin Classes
 
-- `io.kestra.plugin.clay.Example`
+- `io.kestra.plugin.clay.PushRows`
 
 ### Project Structure
 

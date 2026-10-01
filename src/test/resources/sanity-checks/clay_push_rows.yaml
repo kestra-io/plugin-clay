@@ -1,0 +1,15 @@
+id: clay_push_rows
+namespace: sanitychecks.plugin-clay
+
+tasks:
+  - id: push_empty_rows
+    type: io.kestra.plugin.clay.PushRows
+    webhookUrl: https://api.clay.com/v3/sources/webhook/sanity-check
+    rows: []
+
+  - id: assert_nothing_sent
+    type: io.kestra.plugin.core.execution.Assert
+    errorMessage: "An empty input must not send any chunk"
+    conditions:
+      - "{{ outputs.push_empty_rows.rowCount == 0 }}"
+      - "{{ outputs.push_empty_rows.chunkCount == 0 }}"
